@@ -1,126 +1,75 @@
-# R2L Lab Onboarding Quiz
 
-Welcome to the R2L Lab! This quiz is designed to be a challenging and educational experience that will test your ability to quickly ramp up on a new topic, synthesize information, and apply your knowledge to a practical coding problem. It covers fundamental concepts in information retrieval that are central to our work on Retrieval-Augmented Generation (RAG) and building generalist AI agents.
+## Project Overview
+This project demonstrates a text retrieval system using different retrievers. It allows you to load a dataset, run retrieval experiments, and compare performance between the sparse and dense retrievers.
 
-The quiz is divided into two parts. Please complete both.
-
----
-
-
-## Part 1: Literature Review
-
-
-### Objective
-
-The goal of this exercise is to assess your ability to quickly learn a new domain, synthesize information from seminal works, and articulate complex ideas clearly and concisely. You will conduct a focused literature review on sparse retrieval, dense retrieval, and their role in Retrieval-Augmented Generation (RAG).
-
-
-### Core Readings
-
-You may seek out other works as you see fit, but your review **must** cover the following papers:
-
-1.  **Sparse Retrieval (BM25):** Jones, K. S. (1976). [A statistical interpretation of term specificity and its application in retrieval](https://www.staff.city.ac.uk/~sbrp622/papers/RSJ76.pdf). *Journal of documentation*.
-2.  **Dense Retrieval (DPR):** Karpukhin, V., et al. (2020). [Dense Passage Retrieval for Open-Domain Question Answering](https://arxiv.org/abs/2004.04906). *EMNLP*.
-3.  **Retrieval-Augmented Generation (RAG):** Lewis, P., et al. (2020). [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401). *NeurIPS*.
-
-
-### Task
-
-Write a literature review that addresses the following questions. Your review should be well-structured, with clear citations where relevant.
-
-For each of the three topics (Sparse Retrieval, Dense Retrieval, and RAG), please answer the following:
-
-*   **What are the authors trying to do?** Articulate their objectives.
-*   **How was it done prior to their work, and what were the limits of current practice?**
-*   **What is new in their approach, and why do they think it will be successful?**
-*   **What are the mid-term and final “exams” to check for success?** (i.e., How is the method evaluated?)
-
-Additionally, please provide a concluding section that synthesizes the information from all three papers:
-
-*   **Who cares? What difference does the author's results make?** Discuss the broader impact of these technologies.
-*   **What are the risks?** What are the potential failure modes or downsides of these approaches?
-*   **Synthesis:** Briefly explain how these three technologies fit together. How do sparse and dense retrieval support the RAG framework? What are the pros and cons of using one retrieval method over the other in a RAG system?
-
-
-### Deliverable
-
-Please provide your literature review as a PDF document. There is no strict page limit, but we value conciseness and clarity. Aim for a submission that is thorough yet easy to digest.
-
-
----
-
-
-## Part 2: Implementation Challenge
-
-
-### Objective
-
-The goal of this exercise is to evaluate your practical coding and problem-solving skills. You will implement and evaluate two fundamental information retrieval methods: a sparse retriever (BM25) and a dense retriever. This will give you hands-on experience with the trade-offs between these two approaches.
-
-
-### Task
-
-You are tasked with building two retrieval systems and evaluating them on a standard benchmark dataset. We recommend using the **SciFact** dataset, which is part of the BEIR benchmark. It is a good size for this exercise and has a clear fact-checking task.
-
-Your implementation should be in Python. You are free to use any libraries you see fit, but we recommend the following for a straightforward implementation:
-*   `beir`: For downloading the dataset.
-*   `rank-bm25`: For the sparse retrieval implementation.
-*   `sentence-transformers`: For the dense retrieval implementation.
-*   `faiss-cpu` or `faiss-gpu`: For efficient similarity search in dense retrieval.
-
-
-### Steps
-
-1.  **Set up your environment:**
-    *   Create a `requirements.txt` file listing all your dependencies.
-
-2.  **Download the data:**
-    *   Write a script to download the `scifact` dataset using the `beir` library.
-
-3.  **Implement Sparse Retrieval:**
-    *   Create a script that:
-        *   Loads the SciFact corpus and queries.
-        *   Indexes the corpus using BM25.
-        *   For each query, retrieves the top 100 most relevant documents.
-        *   Saves the results on the `test` split in the format expected by the `beir` evaluation tool (a JSON file where keys are query IDs and values are dictionaries of doc IDs and scores).
-
-4.  **Implement Dense Retrieval:**
-    *   Create a script that:
-        *   Loads the SciFact corpus and queries.
-        *   Uses a pre-trained `sentence-transformers` model (e.g., `all-MiniLM-L6-v2`) to embed the entire corpus.
-        *   Builds a FAISS index for the corpus embeddings.
-        *   For each query, embeds the query and uses the FAISS index to retrieve the top 100 most similar documents.
-        *   Saves the results on the `test` split in the same format as the sparse retriever.
-
-5.  **Evaluate the Retrievers:**
-    *   We have provided a standardized evaluation script, `evaluation.py`. Use it to evaluate your two retrieval systems. This ensures that all candidates are evaluated in the same way.
-
-
-### How to Run the Evaluation
-
-Once you have generated the results files for your sparse and dense retrievers, you can run the evaluation script as follows:
-
-```bash
-# First, make sure you have downloaded the dataset.
-# Let's assume it's in a directory called 'datasets/scifact'.
-
-# Evaluate the sparse retriever
-python evaluation.py datasets/scifact results/sparse_results.json
-
-# Evaluate the dense retriever
-python evaluation.py datasets/scifact results/dense_results.json
+## Project Structure
 ```
-The script will print the evaluation scores (nDCG@10, Recall@100, and MRR) to the console.
+project_root/
+│
+├── datasetloader.py           # Script to load dataset
+├── retrievers/                # Implementations of different retrievers
+|      └── dense_retriever.py  # Script contains implementation of dense retriever
+|      └── sparse_retriever.py # Script contains implementation of sparse retriever
+├── results/                   # Folder where retrieval results are saved
+├── evaluation.py              # Script for evaluation of retrievers
+├── requirements.txt           # Python dependencies
+└── main.py                    # Main script to run retrieval
+```
 
-### Deliverable
+## Instructions
+Follow these steps to set up the environment and run the code:
 
-Please submit your solution as a **single zip file**. The zip file should contain:
+2. **Create a virtual environment** (recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-*   All your Python scripts (for downloading data, sparse retrieval, and dense retrieval).
-*   Your `requirements.txt` file.
-*   A `README.md` file that:
-    *   Briefly explains your project structure.
-    *   Provides clear, step-by-step instructions on how to set up the environment and run your code to generate the retrieval results.
-    *   Includes a brief discussion of your results. Which retriever performed better? Why do you think that is? What are the performance trade-offs (e.g., speed, memory, retrieval quality) you observed?
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Do **not** include the downloaded dataset in your zip file. Your instructions should be clear enough that we can download it ourselves. We will run your scripts and then use the provided `evaluation.py` to verify your results.
+4. **Run the dataset loader and retrieval script**:
+   ```bash
+   python main.py
+   ```
+   This will first load the dataset and run both retriever scripts to generate results for the sparse and dense retrievers, then save the outputs in the `results/` folder.
+
+5. **Run the evaluation script**:
+   ```bash
+   python evaluation.py
+   ```
+    This will display the evaluation score for both of the retrievers in the terminal output.
+
+## Results Discussion
+After running the scripts, the retrievers can be compared using the following information:
+
+- **Which metrics were used for evaluation?**  
+    - Normalized Discounted Cumulative Gain (NDCG) - Measures the quality of ranking.
+    - Mean Average Precision (MAP) - Measures the average precision across all relevant documents for a query, then averages over all queries.
+    - Recall - Measures the fraction of relevant documents retrieved out of all relevant documents available.
+    - Precision - Measures the fraction of retrieved documents that are relevant.
+
+    These metrics were used for top 10 and 100 documents.
+
+- **Retrieval Performance Comparison**
+
+    | Metric     | Sparse Retriever @10 | Sparse Retriever @100 | Dense Retriever @10 | Dense Retriever @100 |
+    |------------|-------------------|--------------------|-------------------|--------------------|
+    | NDCG       | 0.62176           | 0.64755            | 0.6402            | 0.66904            |
+    | MAP        | 0.5815            | 0.58715            | 0.58873           | 0.59504            |
+    | Recall     | 0.73417           | 0.84722            | 0.78667           | 0.91667            |
+    | Precision  | 0.08              | 0.00953            | 0.089             | 0.01047            |
+
+
+- **Which retriever performed better?**  
+  For both retrievers, increasing the number of top-k documents retrieved generally led to higher evaluation scores which indicated that both retrievers perform better when more documents are considered. However, dense retriever scores slightly higher across all metrics (NDCG, MAP, Recall, Precision) for both top-10 and top-100. It has high recall, which indicates that it finds a larger portion of all relevant documents because due to the ability to capture semantic relevance rather than relying solely on keyword matching like the sparse retriever.
+
+- **Performance Trade-offs Observed**:
+  - **Speed vs. Quality**: Sparse retriever was faster but less accurate whereas dense retriever was more slower but abit more accurate.  
+  - **Memory Usage**: Dense retriever required more memory for embeddings.  
+  - **Retrieval Quality**: Sparse methods like BM25 are lightweight but may miss semantic matches.
+
+- **Concluding statement**  
+  In my opinion, even though the dense retriever achieved better results, the improvement was not very large. The margin between the two retrievers was small for most metrics. For this dataset, it can be argued that the sparse retriever might be a better choice in terms of memory efficiency and overall performance. Additionally, the dense retriever tends to be more computationally expensive than the sparse retriever.
