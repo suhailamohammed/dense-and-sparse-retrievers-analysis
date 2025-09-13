@@ -50,8 +50,6 @@ def main():
     print(f"Evaluating results from {dense_results_file_path}...")
     scores_dense = evaluator.evaluate(qrels, results_dense, [10, 100])
 
-
-
     # Print the scores
     print("\nEvaluation Scores for sparse retriever:")
     print(json.dumps(scores_sparse, indent=4))
