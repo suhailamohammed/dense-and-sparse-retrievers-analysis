@@ -2,6 +2,9 @@
 ## Project Overview
 This project demonstrates a text retrieval system using different retrievers. It allows you to load a dataset, run retrieval experiments, and compare performance between the sparse and dense retrievers.
 
+You can read my detailed literature review on retrieval systems here:  
+[From Sparse to Dense and Beyond: A Literature Review of Retrieval-Augmented Generation](https://www.researchgate.net/publication/395463262_From_Sparse_to_Dense_and_Beyond_A_Literature_Review_of_Retrieval-Augmented_Generation)
+
 ## Project Structure
 ```
 project_root/
